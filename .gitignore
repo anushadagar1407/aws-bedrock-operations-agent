@@ -11,5 +11,6 @@ node_modules/
 infra/cdk.out/
 web/.next/
 web/node_modules/
+*.tsbuildinfo
 reports/*.json
 *.log
