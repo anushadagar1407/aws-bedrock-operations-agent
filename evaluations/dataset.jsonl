@@ -1,0 +1,15 @@
+{"id":"available-01","input":"What is the status of ABC123?","expected_status":"available","expected_answer":"available","context":["ABC123 is available at Fraser Surrey Dock."]}
+{"id":"available-02","input":"Can I dispatch ABC123?","expected_status":"available","expected_answer":"available","context":["ABC123 is available and has appointment APT-1001."]}
+{"id":"available-03","input":"Where is ABC123?","expected_status":"available","expected_answer":"Fraser Surrey Dock","context":["ABC123 is available at Fraser Surrey Dock."]}
+{"id":"available-04","input":"Is ABC123 ready for pickup?","expected_status":"available","expected_answer":"available","context":["The terminal record for ABC123 says available."]}
+{"id":"available-05","input":"Check ABC123 and its appointment.","expected_status":"available","expected_answer":"APT-1001","context":["ABC123 has appointment APT-1001."]}
+{"id":"held-01","input":"What is the status of CONFLICT42?","expected_status":"conflict","expected_answer":"manual review","context":["The database says available but the report says held."]}
+{"id":"held-02","input":"Can CONFLICT42 be released?","expected_status":"conflict","expected_answer":"conflict","context":["CONFLICT42 has conflicting database and report statuses."]}
+{"id":"held-03","input":"Why is CONFLICT42 blocked?","expected_status":"conflict","expected_answer":"held","context":["The terminal report says CONFLICT42 is held."]}
+{"id":"held-04","input":"Validate the status of CONFLICT42.","expected_status":"conflict","expected_answer":"manual review","context":["Conflicting evidence requires manual review."]}
+{"id":"held-05","input":"Should dispatch proceed for CONFLICT42?","expected_status":"conflict","expected_answer":"manual review","context":["Dispatch should wait while status evidence conflicts."]}
+{"id":"missing-01","input":"What is the status of MISSING99?","expected_status":"missing","expected_answer":"not found","context":["MISSING99 does not have a normalized record."]}
+{"id":"missing-02","input":"Can you locate MISSING99?","expected_status":"missing","expected_answer":"manual review","context":["MISSING99 requires manual review."]}
+{"id":"missing-03","input":"Does MISSING99 have an appointment?","expected_status":"missing","expected_answer":"not found","context":["No record or appointment was found for MISSING99."]}
+{"id":"missing-04","input":"Check MISSING99 at the terminal.","expected_status":"missing","expected_answer":"not found","context":["The terminal report is incomplete for MISSING99."]}
+{"id":"missing-05","input":"Why can’t MISSING99 be dispatched?","expected_status":"missing","expected_answer":"manual review","context":["The container is missing from normalized operational records."]}
