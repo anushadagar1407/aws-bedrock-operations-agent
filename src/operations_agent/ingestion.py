@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from operations_agent.adapters.local import AdapterBundle
@@ -11,9 +11,9 @@ from operations_agent.retry import classify_ingestion_error
 
 def _timestamp(value: str | None) -> str:
     if value:
-        datetime.fromisoformat(value.replace("Z", "+00:00"))
+        datetime.fromisoformat(value.replace("Z", "+00:00"))  # noqa: FURB162
         return value
-    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    return datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
 
 def normalize_report(payload: bytes, source_key: str) -> ContainerRecord:

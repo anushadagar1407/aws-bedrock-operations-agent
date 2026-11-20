@@ -9,10 +9,17 @@ from typing import Any
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from operations_agent.adapters.local import AdapterBundle, LocalAlertPublisher, LocalAuditRepository, LocalContainerRepository, LocalJobQueue, LocalReportStore
+from evaluations.metrics import run_deepeval, run_ragas
+from operations_agent.adapters.local import (
+    AdapterBundle,
+    LocalAlertPublisher,
+    LocalAuditRepository,
+    LocalContainerRepository,
+    LocalJobQueue,
+    LocalReportStore,
+)
 from operations_agent.agent import answer
 from operations_agent.domain import ContainerRecord
-from evaluations.metrics import run_deepeval, run_ragas
 
 
 def load_cases(path: str | Path) -> list[dict[str, Any]]:

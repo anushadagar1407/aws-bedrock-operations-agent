@@ -1,6 +1,13 @@
-from operations_agent.adapters.local import AdapterBundle, LocalAlertPublisher, LocalAuditRepository, LocalContainerRepository, LocalJobQueue, LocalReportStore
-from operations_agent.domain import ContainerRecord
+from operations_agent.adapters.local import (
+    AdapterBundle,
+    LocalAlertPublisher,
+    LocalAuditRepository,
+    LocalContainerRepository,
+    LocalJobQueue,
+    LocalReportStore,
+)
 from operations_agent.agent import answer
+from operations_agent.domain import ContainerRecord
 
 
 def test_conflicting_evidence_creates_review_exception(tmp_path) -> None:

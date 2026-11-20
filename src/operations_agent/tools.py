@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from operations_agent.adapters.local import AdapterBundle
@@ -9,7 +9,6 @@ from operations_agent.domain import (
     ContainerRecord,
     Evidence,
     ExceptionRecord,
-    ToolError,
     ValidationResult,
 )
 
@@ -23,7 +22,7 @@ def lookup_container(container_id: str, adapters: AdapterBundle) -> ContainerRec
 
 def retrieve_report(report_key: str, adapters: AdapterBundle) -> list[Evidence]:
     payload = json.loads(adapters.reports.get(report_key).decode("utf-8"))
-    observed_at = str(payload.get("last_updated") or datetime.now(timezone.utc).isoformat())
+    observed_at = str(payload.get("last_updated") or datetime.now(UTC).isoformat())
     return [
         Evidence("terminal_report", report_key, key, str(value), observed_at)
         for key, value in payload.items()

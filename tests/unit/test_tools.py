@@ -1,4 +1,11 @@
-from operations_agent.adapters.local import AdapterBundle, LocalAlertPublisher, LocalAuditRepository, LocalContainerRepository, LocalJobQueue, LocalReportStore
+from operations_agent.adapters.local import (
+    AdapterBundle,
+    LocalAlertPublisher,
+    LocalAuditRepository,
+    LocalContainerRepository,
+    LocalJobQueue,
+    LocalReportStore,
+)
 from operations_agent.domain import ContainerRecord
 from operations_agent.tools import retrieve_report, validate_status
 
