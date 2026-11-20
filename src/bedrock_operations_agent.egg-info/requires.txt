@@ -1,0 +1,12 @@
+
+[aws]
+boto3>=1.35
+
+[dev]
+pytest>=8
+ruff>=0.8
+mypy>=1.13
+
+[evaluation]
+deepeval>=1.0
+ragas>=0.2

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bedrock-operations-agent"
+version = "0.1.0"
+description = "A grounded AWS Bedrock operations agent with local evaluation mode."
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+aws = ["boto3>=1.35"]
+evaluation = ["deepeval>=1.0", "ragas>=0.2"]
+dev = ["pytest>=8", "ruff>=0.8", "mypy>=1.13"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["operations_agent"]

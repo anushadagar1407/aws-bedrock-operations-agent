@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+src/bedrock_operations_agent.egg-info/PKG-INFO
+src/bedrock_operations_agent.egg-info/SOURCES.txt
+src/bedrock_operations_agent.egg-info/dependency_links.txt
+src/bedrock_operations_agent.egg-info/requires.txt
+src/bedrock_operations_agent.egg-info/top_level.txt
+src/operations_agent/__init__.py
+src/operations_agent/health.py

@@ -1,0 +1,9 @@
+{
+  "name": "bedrock-operations-agent",
+  "private": true,
+  "scripts": {
+    "test": "npm --prefix infra test -- --runInBand && npm --prefix web test -- --runInBand",
+    "typecheck": "npm --prefix infra run typecheck && npm --prefix web run typecheck",
+    "synth": "npm --prefix infra run synth"
+  }
+}
