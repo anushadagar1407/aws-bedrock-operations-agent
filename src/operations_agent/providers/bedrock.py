@@ -37,7 +37,7 @@ class BedrockProvider:
                 try:
                     result = dispatch_tool(name, dict(tool_use.get("input", {})))
                     results.append({"toolResult": {"toolUseId": tool_use["toolUseId"], "content": [{"json": result}]}})
-                except Exception as error:
+                except (KeyError, LookupError, OSError, RuntimeError, ValueError) as error:
                     results.append(
                         {
                             "toolResult": {
