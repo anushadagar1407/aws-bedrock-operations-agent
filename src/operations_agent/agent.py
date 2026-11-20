@@ -1,0 +1,90 @@
+from __future__ import annotations
+
+import re
+from typing import Protocol
+from uuid import uuid4
+
+from operations_agent.adapters.local import AdapterBundle
+from operations_agent.domain import AgentResponse, Evidence
+from operations_agent.tools import (
+    create_exception,
+    lookup_container,
+    retrieve_report,
+    validate_status,
+)
+
+
+class ModelProvider(Protocol):
+    def answer(self, query: str, evidence: list[Evidence], status: str, reason: str) -> str: ...
+
+
+class DeterministicProvider:
+    def answer(self, query: str, evidence: list[Evidence], status: str, reason: str) -> str:
+        del query
+        if status == "conflict":
+            return f"Manual review required: {reason}"
+        if status == "unknown":
+            return f"Manual review required: {reason}"
+        terminal = next((item.value for item in evidence if item.field == "terminal"), "unknown")
+        return f"The container status is {status} at {terminal}. Source evidence agrees with the normalized record."
+
+
+def _container_id(query: str) -> str:
+    match = re.search(r"\b[A-Z]{3,}[0-9]{2,}\b", query.upper())
+    if match is None:
+        raise ValueError("The query must include a container ID such as ABC123.")
+    return match.group(0)
+
+
+def answer(
+    query: str,
+    adapters: AdapterBundle,
+    model_provider: ModelProvider | None = None,
+) -> AgentResponse:
+    provider = model_provider or DeterministicProvider()
+    audit_id = str(uuid4())
+    container_id = _container_id(query)
+    trace = ["extract_container_id", "lookup_container", "retrieve_report", "validate_status"]
+    try:
+        record = lookup_container(container_id, adapters)
+    except LookupError:
+        response = AgentResponse(
+            answer=f"No normalized record was found for {container_id}. Manual review is required.",
+            status="missing",
+            confidence=0.05,
+            evidence=[],
+            requires_review=True,
+            audit_id=audit_id,
+            tool_trace=trace,
+        )
+        adapters.audit.record({"event": "agent_answer", "container_id": container_id, "status": "missing", "audit_id": audit_id})
+        return response
+
+    evidence = retrieve_report(record.source_report_key, adapters)
+    validation = validate_status(record, evidence)
+    if validation.requires_review:
+        exception = create_exception(container_id, validation.reason, evidence, adapters)
+        trace.append("create_exception")
+        reason = f"{validation.reason} Exception {exception.exception_id} was created."
+    else:
+        reason = validation.reason
+    response = AgentResponse(
+        answer=provider.answer(query, evidence, validation.status, reason),
+        status=validation.status,
+        confidence=validation.confidence,
+        evidence=evidence,
+        requires_review=validation.requires_review,
+        audit_id=audit_id,
+        tool_trace=trace,
+    )
+    adapters.audit.record(
+        {
+            "event": "agent_answer",
+            "container_id": container_id,
+            "status": response.status,
+            "requires_review": response.requires_review,
+            "audit_id": audit_id,
+        }
+    )
+    return response
+
